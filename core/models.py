@@ -6,8 +6,10 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class SavedPosts(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    posts = models.ManyToManyField(to='Post', null=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='User')
+    posts = models.ManyToManyField(to='Post',
+                                   verbose_name='Saved Post',
+                                   related_name='saved_posts')
 
     class Meta:
         verbose_name = 'Сохраненные видео'
@@ -22,8 +24,8 @@ class Short(models.Model):
         verbose_name = 'Видео'
         verbose_name_plural = 'Видео'
 
-    # def __str__(self):
-    #     return f'{self.name} - {self.status}'
+    def __str__(self):
+        return f'{self.video} - {self.created_at}'
 class Profile(models.Model):
     user = models.OneToOneField(
         to=User,
@@ -51,7 +53,7 @@ class Post(models.Model):
         related_name="posts"
     )
     # content = models.TextField()
-    likes = models.PositiveIntegerField(default=0)
+    likes = models.PositiveIntegerField('likes', default=0)
 
     def __str__(self):
         return f'{self.name} - {self.status}'
