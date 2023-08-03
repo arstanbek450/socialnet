@@ -14,7 +14,7 @@ class SavedPosts(models.Model):
     class Meta:
         verbose_name = 'Сохраненные видео'
         verbose_name_plural = 'Сохраненные видео'
-class Short(models.Model):
+class Shorts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     video = models.FileField(upload_to='video/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

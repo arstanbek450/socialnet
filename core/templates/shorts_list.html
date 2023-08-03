@@ -1,0 +1,7 @@
+<h2>Shorts List</h2>
+{% for short in shorts %}
+  <div>
+    <a href="{% url 'shorts_detail' short.id %}">{{ short.video.name }}</a>
+  </div>
+{% endfor %}
+
