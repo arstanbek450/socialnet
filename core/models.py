@@ -85,7 +85,7 @@ class Category(models.Model):
         (9, 9),
         (10, 10)
     )
-    name = models.CharField('Наименование столбца', max_length=50, null=True, blank=True)
+    name = models.CharField('Наименование столбца', max_length=50)
     rating = models.PositiveSmallIntegerField('Рейтинг', choices=RATING_CHOICES, null=True, blank=True)
 
     class Meta:

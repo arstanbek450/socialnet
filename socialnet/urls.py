@@ -27,8 +27,8 @@ urlpatterns = [
     path('about_us/', about_us),
     path('posts/<int:id>', post_detail),
     path('profile/<int:id>', post_detail, name='profile'),
-    path('shorts/<int:id>/', shorts_detail, name='shorts_detail'),
-    path('category/<int:id>/', category_detail, name='category_detail'),
+    path('shorts/<int:id>', shorts_detail, name='shorts_detail'),
+    path('categories/<int:id>', category_detail, name='category'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,6 +1,10 @@
-<h2>Category List</h2>
-{% for category in categories %}
-  <div>
-    <a href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
-  </div>
-{% endfor %}
+<h2>Categories List</h2>
+{% if category.name %}
+<img src="{{ category.name.url }}">
+{% endif %}
+<div>
+  Котегория: {{ category.rating }}
+</div>
+
+
+

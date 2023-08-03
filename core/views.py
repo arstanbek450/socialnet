@@ -34,7 +34,7 @@ def category_detail(request, id):
     context = {}
     category_object = Category.objects.get(id=id)
     context['category'] = category_object
-    return render(request, 'category_detail.html', context)
+    return render(request, 'category_list.html', context)
 
 def contacts(request):
     return HttpResponse("Наши контакты!")
