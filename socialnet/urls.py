@@ -27,9 +27,7 @@ urlpatterns = [
     path('about_us/', about_us),
     path('posts/<int:id>', post_detail),
     path('profile/<int:id>', post_detail, name='profile'),
-    # path('shorts/', shorts_list, name='shorts_list'),
     path('shorts/<int:id>/', shorts_detail, name='shorts_detail'),
-    # path('category/', category_list, name='category_list'),
     path('category/<int:id>/', category_detail, name='category_detail'),
 ]
 

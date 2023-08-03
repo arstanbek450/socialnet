@@ -1,7 +1,8 @@
 <h2>Shorts List</h2>
-{% for short in shorts %}
-  <div>
-    <a href="{% url 'shorts_detail' short.id %}">{{ short.video.name }}</a>
-  </div>
-{% endfor %}
+{% if short.video %}
+<img src="{{ short.video.url }}">
+{% endif %}
+<div>
+  Кол-о просмотров: {{ short.views }}
+</div>
 

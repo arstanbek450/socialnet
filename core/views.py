@@ -7,6 +7,10 @@ def homepage(request):
     context["name"] = "Arstan"
     posts_list = Post.objects.all()
     context["posts"] = posts_list
+    shorts_list = Shorts.objects.all()
+    context["shorts"] = shorts_list
+    category_list = Category.objects.all()
+    context["categories"] = category_list
     return render(request, "home.html", context)
 
 def post_detail(request, id):
@@ -19,26 +23,18 @@ def profile_detail(request, id):
     context = {}
     context['profile'] = Profile.objects.get(id=id)
     return render(request, 'profile_detail.html', context)
-def shorts_list(request):
-    shorts = Shorts.objects.all()
-    context = {'shorts': shorts}
-    return render(request, 'shorts_list.html', context)
 
 def shorts_detail(request, id):
-    shorts = Shorts.objects.get(id=id)
-    context = {'shorts': shorts}
-    return render(request, 'shorts_detail.html', context)
-
-def category_list(request):
-    categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, 'category_list.html', context)
+    context = {}
+    shorts_object = Shorts.objects.get(id=id)
+    context['short'] = shorts_object
+    return render(request, 'shorts_list.html', context)
 
 def category_detail(request, id):
-    category = Category.objects.get(id=id)
-    context = {'category': category}
+    context = {}
+    category_object = Category.objects.get(id=id)
+    context['category'] = category_object
     return render(request, 'category_detail.html', context)
-
 
 def contacts(request):
     return HttpResponse("Наши контакты!")
