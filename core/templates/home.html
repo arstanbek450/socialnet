@@ -1,45 +1,46 @@
-<h1>
-    Hello world
-</h1>
-<div>
-    Это домашняя страница
-</div>
-{{ name }}
-<div>
-    <a href="/profile/{{ request.user.profile.id }}">
-        Профиль {{ request.user.username }}
-    </a>
-</div>
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Социальная сеть</title>
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="{% url 'shorts_list' %}">Shorts</a>
+            <a href="{% url 'saved-posts' %}">SavedPosts</a>
+            <a href="{% url 'category_list' %}">Categories</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Hello world</h1>
+        <h1>Test</h1>
+        <div class="hulk">
+            Это домашняя страница
+        </div>
+        <div>
+            Текст 2
+        </div>
+        <p>{{ name }} <a href="">hello</a></p>
+        <a href="" class="hulk">hello</a><br>
+        <a href="">hello</a>
+        <div>
+            <a href="/profile/{{ request.user.profile.id }}">
+                Профиль {{ request.user.username }}
+            </a>
+        </div>
 
-<h2>Посты</h2>
-{% for post in posts %}
-    <div>
-        <a href="/posts/{{ post.id }}">
-            {{ post.id }}. {{ post.name }}
-        </a>
+        <h2>Посты</h2>
+        <ol>
+            {% for post in posts %}
+            <li>
+                <a href="/posts/{{ post.id }}">{{ post.name }}</a>
+            </li>
+            {% endfor %}
+        </ol>
     </div>
-
-    {% endfor %}
-</div>
-
-<div>
-    <h2>Shorts List</h2>
-    {% for short in shorts %}
-    <div>
-        <a href="/shorts/{{ short.id }}">
-            {{ short.id }}
-        </a>
-    </div>
-    {% endfor %}
-</div>
-
-<div>
-    <h2>Categories List</h2>
-    {% for category in categories %}
-    <div>
-        <a href="/categories/{{ category.id }}">
-            {{ category.id }}. {{ category.name }}
-        </a>
-    </div>
-    {% endfor %}
-</div>
+</body>
+</html>

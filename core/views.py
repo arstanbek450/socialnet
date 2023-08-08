@@ -1,16 +1,72 @@
 from django.shortcuts import render, HttpResponse
 from .models import *
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView
+from .models import Short, Category, SavedPosts
 # Create your views here.
+def homepage(request):
+    context = {}
+    context["name"] = "Kaium"
+    posts_list = Post.objects.all() # SELECT * FROM Post;
+    context["posts"] = posts_list
+    return render(request, "home.html", context)
+
+
+def post_detail(request, id):
+    context = {}
+    post_object = Post.objects.get(id=id)
+    context["post"] = post_object
+    return render(request, "post_info.html", context)
+
+
+def profile_detail(request, id):
+    context = {}
+    context['profile'] = Profile.objects.get(id=id)
+    return render(request, 'profile_detail.html', context)
+
+
+def shorts(request):
+    context = {
+        'shorts_list': Short.objects.all()
+    }
+    return render(request, "shorts_detail.html", context)
+
+def short_info(request, id):
+    context = {"short": Short.objects.get(id=id)}
+    return render(request, "shorts_list.html", context)
+
+
+def saved_posts_list(request):
+    posts = Post.objects.filter(saved_posts__user=request.user)
+    context = {'posts': posts}
+    return render(request, 'saved_posts.html', context)
+
+
+def user_posts(request, user_id):
+    user = User.objects.get(id=user_id)
+    posts = Post.objects.filter(creator=user)
+    context = {
+        "user": user,
+        "posts": posts
+    }
+    return render(request, 'user_posts.html', context)
+
+
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'category_list.html', {'categories': categories})
+
+
+def category_detail(request, id):
+    category = Category.objects.get(id=id)
+    return render(request, 'category_detail.html', {'category': category})
+
 
 def homepage(request):
     context = {}
-    context["name"] = "Arstan"
-    posts_list = Post.objects.all()
+    context["name"] = "Kaium"
+    posts_list = Post.objects.all() # SELECT * FROM Post;
     context["posts"] = posts_list
-    shorts_list = Shorts.objects.all()
-    context["shorts"] = shorts_list
-    category_list = Category.objects.all()
-    context["categories"] = category_list
     return render(request, "home.html", context)
 
 def post_detail(request, id):
@@ -22,21 +78,11 @@ def post_detail(request, id):
 def profile_detail(request, id):
     context = {}
     context['profile'] = Profile.objects.get(id=id)
-    return render(request, 'profile_detail.html', context)
+    return render(request, 'profiple_detail.html', context)
 
-def shorts_detail(request, id):
-    context = {}
-    shorts_object = Shorts.objects.get(id=id)
-    context['short'] = shorts_object
-    return render(request, 'shorts_list.html', context)
 
-def category_detail(request, id):
-    context = {}
-    category_object = Category.objects.get(id=id)
-    context['category'] = category_object
-    return render(request, 'category_list.html', context)
 
-def contacts(request):
+def contact(request):
     return HttpResponse("Наши контакты!")
 
 def about_us(request):

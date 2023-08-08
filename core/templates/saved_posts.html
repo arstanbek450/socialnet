@@ -7,13 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Shorts</h2>
-    {% for short in shorts_list %}
-        <div>
-            <a href="{% url 'shorts-info' short.id %}">
-                {{ short.user }} - {{ short.created_at }}
-            </a>
-        </div>
-    {% endfor %}
+    <div>
+        {% for post in posts %}
+            <div>
+                <a href="/posts/{{ post.id }}">
+                    {{ post.name }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

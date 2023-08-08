@@ -1,13 +1,7 @@
-<h2>Shorts Detail</h2>
+<h2>Short №{{ short.id }}</h2>
 <div>
-  Video: <video width="320" height="240" controls>
-    <source src="{{ shorts.video.url }}" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+    Автор: {{ short.user.username }}
 </div>
 <div>
-  Created at: {{ shorts.created_at }}
-</div>
-<div>
-  Views: {{ shorts.views }}
+    Кол-во просмотров: {{ short.views_qty }}
 </div>
