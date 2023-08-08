@@ -35,6 +35,12 @@
     <div class="post-container">
       <h2>Пост</h2>
       <div>
+        автор:
+        <a href="{% url 'user-posts' post.creator.id %} ">
+          {{ post.creator.username }}
+        </a>
+      </div>
+      <div>
         Заголовок: {{ post.name }}
       </div>
       {% if post.photo %}

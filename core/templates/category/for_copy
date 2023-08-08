@@ -1,31 +1,8 @@
-class Category(models.Model):
-    RATING_CHOICES = (
-        (1, 1),
-        (2, 2),
-        (3, 3),
-        (4, 4),
-        (5, 5),
-        (6, 6),
-        (7, 7),
-        (8, 8),
-        (9, 9),
-        (10, 10)
-    )
-    name = models.CharField('Наименование столбца', max_length=50)
-    rating = models.PositiveSmallIntegerField('Рейтинг', choices=RATING_CHOICES, null=True, blank=True)
+<div class="container">
+     {% block content %}
 
-    class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
-
-    def __str__(self):
-        return f'{self.name} - {self.rating}'
-
-
-
-
-
-
+     {% endblock %}
+</div>
 
 
 

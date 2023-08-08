@@ -10,9 +10,9 @@
 </head>
 <body>
     <h2>Посты пользователя: {{ user.username }}</h2>
-    <div>
+    <div class="row container">
         {% for post in posts %}
-            <div class="post">
+            <div class="post col-lg-4 col-md-6">
                 <a href="/posts/{{ post.id }}">
                     {{ post.name }}
                 </a>
@@ -25,7 +25,7 @@
                     Лайки: {{ post.likes }}
                 </p>
             </div>
-            <hr> <!-- прямая линия -->
+<!--            <hr> &lt;!&ndash; прямая линия &ndash;&gt;-->
         {% endfor %}
     </div>
 </body>

@@ -18,7 +18,6 @@ urlpatterns = [
     path('saved_posts/', saved_posts_list, name='saved-posts'),
     path('<int:user_id>/', user_posts, name='user-posts'),
 
-
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

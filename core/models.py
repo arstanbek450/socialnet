@@ -82,17 +82,6 @@ class Short(models.Model):
         return f'{self.video} - {self.created_at}'
 
 
-# class SavedPosts(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     post = models.ManyToManyField(Post, verbose_name='saved post', related_name='saved_posts')
-#
-#     class Meta:
-#         verbose_name = 'saved post'
-#         verbose_name_plural = 'saved posts'
-#
-#     def __str__(self):
-#         return f'{self.user}'
-
 class SavedPosts(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     post = models.ManyToManyField(Post, verbose_name='Сохраненные посты', related_name='saved_posts')
