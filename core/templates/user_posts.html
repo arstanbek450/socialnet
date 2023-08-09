@@ -1,32 +1,23 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-</head>
-<body>
-    <h2>Посты пользователя: {{ user.username }}</h2>
-    <div class="row container">
-        {% for post in posts %}
-            <div class="post col-lg-4 col-md-6">
-                <a href="/posts/{{ post.id }}">
-                    {{ post.name }}
-                </a>
-                {% if post.photo %}
-                    <div>
-                        <img src="{{ post.photo.url }}">
-                    </div>
-                {% endif %}
-                <p>
-                    Лайки: {{ post.likes }}
-                </p>
-            </div>
-<!--            <hr> &lt;!&ndash; прямая линия &ndash;&gt;-->
-        {% endfor %}
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="display-4">Посты пользователя: {{ user.username }}</h2>
+<div class="row container">
+    {% for post in posts %}
+        <div class="post col-lg-4 col-md-6">
+            <a href="/posts/{{ post.id }}" class="h4">
+                {{ post.name }}
+            </a>
+            {% if post.photo %}
+                <div>
+                    <img src="{{ post.photo.url }}" class="img-fluid mt-2">
+                </div>
+            {% endif %}
+            <p class="lead">
+                Лайки: {{ post.likes }}
+            </p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

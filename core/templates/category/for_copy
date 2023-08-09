@@ -1,8 +1,129 @@
-<div class="container">
-     {% block content %}
+1. Добавить extends во все страницы (чтобы навигация и боковая панель была во всех страницах)
+2. Оформить страницы по своему усмотрению
+3.использовать большие шрифты
+4. стилизовть используя готовые решения bootstrap
 
-     {% endblock %}
+
+
+ base.html
+<!DOCTYPE html>
+{% load static %}
+{% load django_bootstrap5 %}
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Социальная сеть</title>
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/"><img src="{% static 'logo.png' %}" height="40px"></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="/">Главная</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shorts_list' %}">Shorts</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'saved-posts' %}">SavedPosts</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category_list' %}">Categories</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                  <input class="form-control me-2" type="text" placeholder="Search">
+                  <button class="btn btn-primary" type="button">Search</button>
+                </form>
+              </div>
+            </div>
+        </nav>
+    <div class="row">
+        <div class="col-2">
+            <div>Главная</div>
+            <div>Поиск</div>
+            <div>Интересное</div>
+        </div>
+    <div class="col-10">
+         {% block content %}
+         {% endblock %}
+    </div>
 </div>
+</body>
+</html>
 
 
+
+
+
+saved_posts.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        {% for post in posts %}
+            <div>
+                <a href="/posts/{{ post.id }}">
+                    {{ post.name }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
+
+
+
+user_posts.html
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+<body>
+    <h2>Посты пользователя: {{ user.username }}</h2>
+    <div class="row container">
+        {% for post in posts %}
+            <div class="post col-lg-4 col-md-6">
+                <a href="/posts/{{ post.id }}">
+                    {{ post.name }}
+                </a>
+                {% if post.photo %}
+                    <div>
+                        <img src="{{ post.photo.url }}">
+                    </div>
+                {% endif %}
+                <p>
+                    Лайки: {{ post.likes }}
+                </p>
+            </div>
+<!--            <hr> &lt;!&ndash; прямая линия &ndash;&gt;-->
+        {% endfor %}
+    </div>
+</body>
+</html>
 

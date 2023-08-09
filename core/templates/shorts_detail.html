@@ -1,7 +1,9 @@
-<h2>Short №{{ short.id }}</h2>
-<div>
-    Автор: {{ short.user.username }}
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="display-4">Short №{{ short.id }}</h2>
+    <div>Автор: {{ short.user.username }}</div>
+    <div>Кол-во просмотров: {{ short.views_qty }}</div>
 </div>
-<div>
-    Кол-во просмотров: {{ short.views_qty }}
-</div>
+{% endblock %}

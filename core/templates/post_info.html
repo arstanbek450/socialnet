@@ -1,60 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Пост</title>
-  <style>
-    /* Place your previous styles here */
-    /* ... */
+{% extends 'base.html' %}
 
-    /* Additional styles for adapting the page */
-    .post-container {
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .post-container img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Blog Title</h1>
-      <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-      </nav>
-    </header>
-    <div class="post-container">
-      <h2>Пост</h2>
-      <div>
-        автор:
-        <a href="{% url 'user-posts' post.creator.id %} ">
-          {{ post.creator.username }}
-        </a>
-      </div>
-      <div>
-        Заголовок: {{ post.name }}
-      </div>
-      {% if post.photo %}
-        <img src="{{ post.photo.url }}" alt="Post Image" style="width: 5%; height: auto;">
-
-      {% endif %}
-      <div>
-        Описание: {{ post.description }}
-      </div>
-      <div>
-        Количество лайков: {{ post.likes }}
-      </div>
+{% block content %}
+    <div class="container">
+        <header>
+            <h1>Blog Title</h1>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </nav>
+        </header>
+        <div class="post-container">
+            <h2>Пост</h2>
+            <div>
+                автор:
+                <a href="{% url 'user-posts' post.creator.id %}">
+                    {{ post.creator.username }}
+                </a>
+            </div>
+            <div>
+                Заголовок: {{ post.name }}
+            </div>
+            <!-- Rest of your post content -->
+        </div>
+        <!-- Add more posts here if needed -->
     </div>
-    <!-- Add more posts here if needed -->
-  </div>
-</body>
-</html>
+{% endblock %}

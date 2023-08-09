@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Category List</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
     <h1>Category List</h1>
     <ul>
         {% for category in categories %}
             <li><a href="{% url 'category-detail' category.id %}">{{ category.name }}</a></li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
 
 
