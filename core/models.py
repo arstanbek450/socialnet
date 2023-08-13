@@ -1,7 +1,8 @@
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
 
 
+# Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(
         to=User,
@@ -47,10 +48,7 @@ class Post(models.Model):
         return f'{self.name} - {self.status}'
 
 
-
 class Category(models.Model):
-#     name = models.CharField('Наименование столбца', max_length=50)
-    name = models.CharField(max_length=100, null=True, default='Default Category Name')
     RATING_CHOICES = (
         (1, 1),
         (2, 2),
@@ -63,16 +61,58 @@ class Category(models.Model):
         (9, 9),
         (10, 10)
     )
-    rating = models.PositiveSmallIntegerField('Рейтинг', choices=RATING_CHOICES, null=True, blank=True)
+
+    name = models.CharField(max_length=50)
+    rating = models.PositiveSmallIntegerField(
+        choices=RATING_CHOICES,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return f'{self.name} - {self.rating}'
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(
+        to=Post,
+        on_delete=models.CASCADE
+    )
+    comment_text = models.TextField()
+    likes_qty = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        null=True, blank=False
+    )
+
+    def __str__(self):
+        return self.comment_text[:20]
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ['created_at']
+
 
 class Short(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    video = models.FileField(upload_to='video/', null=True, blank=True)
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+        verbose_name='Автор',
+        related_name='short'
+    )
+    video = models.FileField('Видео', upload_to='video_post/')
     created_at = models.DateTimeField(auto_now_add=True)
-    views = models.PositiveIntegerField(default=0)
+    views_qty = models.PositiveIntegerField('Просмотры', default=0)
 
     class Meta:
         verbose_name = 'Видео'
@@ -83,40 +123,12 @@ class Short(models.Model):
 
 
 class SavedPosts(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    post = models.ManyToManyField(Post, verbose_name='Сохраненные посты', related_name='saved_posts')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    post = models.ManyToManyField(Post, verbose_name='saved post', related_name='saved_posts')
 
     class Meta:
-        verbose_name = 'Сохраненный пост'
-        verbose_name_plural = 'Сохраненные посты'
+        verbose_name = 'saved post'
+        verbose_name_plural = 'saved posts'
 
     def __str__(self):
         return f'{self.user}'
-
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(
-        to=User,
-        on_delete=models.CASCADE
-    )
-    nickname = models.CharField(max_length=55)
-    description = models.TextField(null=True, blank=True)
-
-
-class Comment(models.Model):
-    post = models.ForeignKey(
-        to=Post,
-        on_delete=models.CASCADE,
-    )
-    comment_text = models.TextField()
-    likes_qty = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.comment_text[:20]
-
-    class Meta:
-        verbose_name = "Коментарий"
-        verbose_name_plural = "Коментарии"
-        ordering = ['created_at']

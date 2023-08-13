@@ -1,11 +1,19 @@
-1. Добавить extends во все страницы (чтобы навигация и боковая панель была во всех страницах)
-2. Оформить страницы по своему усмотрению
-3.использовать большие шрифты
-4. стилизовть используя готовые решения bootstrap
+https://github.com/Amankaium/socialnet
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Добавление видео</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+      <p>
+            <input class="form-control" type="file" name="video_file">
+      </p>
+      <button class="btn btn-warning">Сохранить</button>
+    </form>
+{% endblock %}
 
 
 
- base.html
 <!DOCTYPE html>
 {% load static %}
 {% load django_bootstrap5 %}
@@ -14,7 +22,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>Социальная сеть</title>
-
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'main.css' %}">
@@ -64,11 +71,224 @@
 </html>
 
 
-
-
-
-saved_posts.html
 <!DOCTYPE html>
+<html>
+<head>
+    <title>{{ category.name }}</title>
+</head>
+<body>
+    <h1>{{ category.name }}</h1>
+    <p>{{ category.rating }}</p>
+    <!-- Add any other fields you want to display -->
+</body>
+</html>
+
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Category List</h1>
+    <ul>
+        {% for category in categories %}
+            <li><a href="{% url 'category-detail' category.id %}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Comments:</h3>
+    <ul>
+        {% for comment in comments %}
+             <li><a href="{% url 'comment_list' comment.id %}">{{ comment.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Добавление поста</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+      <p>
+            <input class="form-control" type="text" name="post_name">
+      </p>
+      <p>
+            <textarea class="form-control" name="description" cols="20" rows="5"></textarea>
+      </p>
+      <p>
+            <input class="form-control" type="file" name="photo">
+      </p>
+      <button class="btn btn-warning">Сохранить</button>
+    </form>
+{% endblock %}
+
+
+
+
+<!DOCTYPE html>
+{% load static %}
+{% load django_bootstrap5 %}
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Социальная сеть</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/"><img src="{% static 'logo.png' %}" height="40px"></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="/">Главная</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shorts_list' %}">Shorts</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'saved-posts' %}">SavedPosts</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category_list' %}">Categories</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                  <input class="form-control me-2" type="text" placeholder="Search">
+                  <button class="btn btn-primary" type="button">Search</button>
+                </form>
+              </div>
+            </div>
+        </nav>
+    <div class="row">
+        <div class="col-2">
+            <div>Главная</div>
+            <div>Поиск</div>
+            <div>Интересное</div>
+        </div>
+    <div class="col-10">
+         {% block content %}
+         {% endblock %}
+    </div>
+</div>
+</body>
+</html>
+
+
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+
+{% block content %}
+
+<h2>Пост</h2>
+{% if post.creator %}
+    <div>
+        Автор:
+        <a href="{% url 'user-posts' post.creator.id %}">
+            {{ post.creator.username }}
+        </a>
+    </div>
+{% endif %}
+<div>
+    Заголовок: {{ post.name }}
+</div>
+    {% if post.photo %}
+        <img src="{{ post.photo.url }}" height="200px">
+    {% endif %}
+<div>
+    Описание: {{ post.description }}
+</div>
+<div>
+    Кол-во лайков: {{ post.likes }}
+</div>
+<div>
+    {% if post in request.user.savedposts.post.all %}
+        <form action="/remove-saved/" method="POST">
+        {% csrf_token %}
+        <input type="number" name="post_id" value="{{ post.id }}" hidden>
+        <button class="btn btn-danger">Удалить из сохраненных</button>
+        </form>
+    {% else %}
+
+    <form action="/add-saved/" method="POST">
+        {% csrf_token %}
+        <input type="number" name="post_id" value="{{ post.id }}" hidden>
+        <button class="btn btn-success">Добавить в сохраненные</button>
+
+    </form>
+    {% endif %}
+</div>
+<form method="POST">
+
+    {% csrf_token %}
+    {% bootstrap_form comment_form %}
+    <button class="btn btn-info">Добавить</button>
+</form>
+<h4>Добавить комментарий</h4>
+{% for comment in comments %}
+<div>
+    <b>{{ comment.created_by }}</b> {{ comment.comment_text }}
+</div>
+{% endfor %}
+
+{% endblock %}
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="display-4">Профиль {{ profile.user.username }}</h2>
+    <div class="lead">Ник: {{ profile.nickname }}</div>
+    <div>{{ profile.description }}</div>
+    <h3>Посты пользователя</h3>
+{% for post in user_posts %}
+    <div>
+        <a href="/posts/{{ post.id }}">
+            {{ post.name }}
+        </a>
+    </div>
+{% endfor %}
+
+</div>
+
+
+{% endblock %}
+
+
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+
+<h1>Registration</h1>
+<form method="post">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <button type="submit" class="btn btn-succes">Зарегистрироватся</button>
+</form>
+
+{% endblock %}
+
+
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -88,42 +308,496 @@ saved_posts.html
     </div>
 </body>
 </html>
+{% endblock %}
 
 
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="display-4">Short №{{ short.id }}</h2>
+    <div>Автор: {{ short.user.username }}</div>
+    <div>Кол-во просмотров: {{ short.views }}</div>
+    <div>
+        <video width="500" controls src="{{ short.video.url }}">
+        </video>
+    </div>
+</div>
+{% endblock %}
 
 
+{% extends 'base.html' %}
 
-user_posts.html
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-</head>
-<body>
-    <h2>Посты пользователя: {{ user.username }}</h2>
-    <div class="row container">
-        {% for post in posts %}
-            <div class="post col-lg-4 col-md-6">
-                <a href="/posts/{{ post.id }}">
-                    {{ post.name }}
-                </a>
-                {% if post.photo %}
-                    <div>
-                        <img src="{{ post.photo.url }}">
-                    </div>
-                {% endif %}
-                <p>
-                    Лайки: {{ post.likes }}
-                </p>
-            </div>
-<!--            <hr> &lt;!&ndash; прямая линия &ndash;&gt;-->
+{% block content %}
+<div class="container">
+    <h2 class="display-4">Shorts</h2>
+    <div class="list-group">
+        {% for short in shorts_list %}
+            <a href="{% url 'shorts-info' short.id %}" class="list-group-item list-group-item-action">
+                {{ short.user }} - {{ short.created_at }}
+            </a>
         {% endfor %}
     </div>
-</body>
-</html>
+</div>
 
+
+{% endblock %}
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="display-4">Посты пользователя: {{ user.username }}</h2>
+<div class="row container">
+    {% for post in posts %}
+        <div class="post col-lg-4 col-md-6">
+            <a href="/posts/{{ post.id }}" class="h4">
+                {{ post.name }}
+            </a>
+            {% if post.photo %}
+                <div>
+                    <img src="{{ post.photo.url }}" class="img-fluid mt-2">
+                </div>
+            {% endif %}
+            <p class="lead">
+                Лайки: {{ post.likes }}
+            </p>
+        </div>
+    {% endfor %}
+</div>
+    <a href="{% url 'comment_list' %}">View Comments</a>
+
+{% endblock %}
+
+
+
+
+from django import forms
+from .models import Comment, Short
+from django.contrib.auth.models import User
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment_text']
+
+
+class ShortForm(forms.ModelForm):
+    class Meta:
+        model = Short
+        fields = ['title']
+
+
+class RegistForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+
+
+
+
+
+from django.contrib.auth.models import User
+from django.db import models
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        to=User,
+        on_delete=models.CASCADE
+    )
+    nickname = models.CharField(max_length=55)
+    description = models.TextField(null=True, blank=True)
+
+
+class Post(models.Model):
+    STATUS_CHOICES = (
+        ('Posted', 'Posted'),
+        ('Unposted', 'Unposted')
+    )
+
+    name = models.CharField('Header', max_length=80)
+    description = models.TextField('Description', null=True)
+    photo = models.ImageField('Photo', null=True, blank=True, upload_to="post_images/")
+    status = models.CharField(
+        'Status',
+        max_length=200,
+        choices=STATUS_CHOICES,
+        default="Posted"
+    )
+
+
+    creator = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        null=True,  # необязательно в БД
+        blank=False,  # обязательно в Django
+        verbose_name="Автор поста",
+        related_name="posts"  # default == post_set
+    )
+
+    category = models.ManyToManyField(
+        to='Category',
+        blank=True,
+        verbose_name='Категории',
+    )
+    likes = models.IntegerField('Лайк', default=0)
+
+    def __str__(self):
+        return f'{self.name} - {self.status}'
+
+
+
+class Category(models.Model):
+#     name = models.CharField('Наименование столбца', max_length=50)
+    name = models.CharField(max_length=100, null=True, default='Default Category Name')
+    RATING_CHOICES = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8),
+        (9, 9),
+        (10, 10)
+    )
+    rating = models.PositiveSmallIntegerField('Рейтинг', choices=RATING_CHOICES, null=True, blank=True)
+
+class Short(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    video = models.FileField('Видео')
+    created_at = models.DateTimeField(auto_now_add=True)
+    views = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Видео'
+        verbose_name_plural = 'Видео'
+
+    def __str__(self):
+        return f'{self.video} - {self.created_at}'
+
+
+class SavedPosts(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    post = models.ManyToManyField(Post, verbose_name='Сохраненные посты', related_name='saved_posts')
+
+    class Meta:
+        verbose_name = 'Сохраненный пост'
+        verbose_name_plural = 'Сохраненные посты'
+
+    def __str__(self):
+        return f'{self.user}'
+
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        to=User,
+        on_delete=models.CASCADE
+    )
+    nickname = models.CharField(max_length=55)
+    description = models.TextField(null=True, blank=True)
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(
+        to=Post,
+        on_delete=models.CASCADE,
+    )
+
+    comment_text = models.TextField()
+    likes_qty = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        null=True, blank=False
+    )
+
+    # def __str__(self):
+    #     return self.comment_text[:20]
+
+    class Meta:
+        verbose_name = "Коментарий"
+        verbose_name_plural = "Коментарии"
+        ordering = ['created_at']
+
+
+
+
+from django.shortcuts import render, HttpResponse, redirect
+from .models import *
+from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, DetailView
+from .models import Short, Category, SavedPosts
+from .forms import CommentForm, ShortForm, RegistForm
+
+
+
+def comment_list(request, id):
+    context = {"comment": Comment.objects.get(id=id)}
+    return render(request, 'comment_list.html', context)
+
+
+def homepage(request):
+    context = {}
+    context["name"] = "Kaium"
+    posts_list = Post.objects.all() # SELECT * FROM Post;
+    context["posts"] = posts_list
+    return render(request, "home.html", context)
+
+
+def post_detail(request, id):
+    context = {}
+    post_object = Post.objects.get(id=id)
+    context["post"] = post_object
+    return render(request, "post_info.html", context)
+
+
+def shorts(request):
+    context = {
+        'shorts_list': Short.objects.all()
+    }
+    short_form = ShortForm()
+    context["short_form"] = short_form
+    if request.method == "GET":
+        return render(request, "shorts_list.html", context)
+    elif request.method == "POST":
+        short_form = ShortForm(request.POST)
+        if short_form.is_valid():
+            new_short = short_form.save(commit=False)
+            new_short.save()
+            return HttpResponse("done")
+
+    # return render(request, "shorts_detail.html", context)
+
+def short_info(request, id):
+    context = {"short": Short.objects.get(id=id)}
+    return render(request, "shorts_detail.html", context)
+
+
+def saved_posts_list(request):
+    posts = Post.objects.filter(saved_posts__user=request.user)
+    context = {'posts': posts}
+    return render(request, 'saved_posts.html', context)
+
+
+def user_posts(request, user_id):
+    user = User.objects.get(id=user_id)
+    posts = Post.objects.filter(creator=user)
+    context = {
+        "user": user,
+        "posts": posts
+    }
+    return render(request, 'user_posts.html', context)
+
+
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'category_list.html', {'categories': categories})
+
+
+def category_detail(request, id):
+    category = Category.objects.get(id=id)
+    return render(request, 'category_detail.html', {'category': category})
+
+
+def homepage(request):
+    context = {}
+    context["name"] = "Kaium"
+    posts_list = Post.objects.all() # SELECT * FROM Post;
+    context["posts"] = posts_list
+    return render(request, "home.html", context)
+
+def post_detail(request, id):
+    context = {}
+    post_object = Post.objects.get(id=id)
+    context["post"] = post_object
+    comment_form = CommentForm()
+    context["comment_form"] = comment_form
+    if request.method == "GET":
+        return render(request, "post_info.html", context)
+    elif request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.created_by = request.user
+            new_comment.post = post_object
+            new_comment.save()
+            return HttpResponse("done")
+
+
+def profile_detail(request, id):
+    context = {}
+    profile = Profile.objects.get(id=id)
+    context["profile"] = profile
+    user_posts = Post.objects.filter(creator=profile.user)
+    context["user_posts"] = user_posts
+    return render(request, 'profile_detail.html', context)
+
+
+def create_post(request):
+    if request.method == "GET":
+        return render(request, "create_post_form.html")
+    elif request.method == "POST":   #slovar c lannymy x html formy
+        data = request.POST
+        # print(data)
+        new_post = Post()
+        new_post.name = data["post_name"]
+        new_post.description = data["description"]
+        new_post.creator = request.user
+        new_post.photo = request.FILES["photo"]
+        new_post.save()
+        return HttpResponse("done")
+
+
+@login_required(login_url='/users/sign-in/')
+def add_short(request):
+    if request.method == "GET":
+        return render(request, "add_short.html")
+    elif request.method == "POST":
+        new_short_object = Short(
+            user=request.user,
+            video=request.FILES["video_file"]
+        )
+        new_short_object.save()
+        return redirect('shorts-info', id=new_short_object.id)
+
+
+def add_saved(request):
+    if request.method == "POST":
+        post_id = request.POST["post_id"]
+        post_object = Post.objects.get(id=post_id)
+        saved_post, created = SavedPosts.objects.get_or_create(
+            user=request.user
+        )
+        saved_post.post.add(post_object)
+        saved_post.save()
+        return redirect('/saved_posts/')
+
+def remove_saved(request):
+    if request.method == "POST":
+        post_id = request.POST["post_id"]
+        post_object = Post.objects.get(id=post_id)
+        saved_post = SavedPosts.objects.get(user=request.user)
+        saved_post.post.remove(post_object)
+        saved_post.save()
+        return redirect('/saved_posts/')
+
+
+def contact(request):
+    return HttpResponse("Наши контакты!")
+
+def about_us(request):
+    return HttpResponse("Информация о нас!")
+
+def register(request):
+    if request.method == "POST":
+        form = RegistForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            # return redirect('/')
+            return HttpResponse("succes")
+    else:
+        form = RegistForm()
+    return render(request, 'register.html', {'form': form})
+
+
+
+from django.contrib import admin
+from django.urls import path, include
+from core.views import *
+from django.conf import settings # !
+from django.conf.urls.static import static
+
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', homepage),
+    path('posts/<int:id>', post_detail),
+    path('profile/<int:id>', profile_detail, name='profile'),
+    path('shorts/', shorts, name='shorts_list'),
+    path('shorts/<int:id>/', short_info, name='shorts_detail'),
+    path('categories/', category_list, name='category_list'),
+    path('categories/<int:id>/', category_detail, name='category-detail'),
+    path('saved_posts/', saved_posts_list, name='saved-posts'),
+    path('<int:user_id>/', user_posts, name='user-posts'),
+    path('users/', include('userapp.urls')),
+
+]
+
+
+
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <p>
+                <input type="text" name="login" placeholder="login">
+            </p>
+            <p>
+                <input type="password" name="password_1" placeholder="Пароль">
+            </p>
+            <p>
+                <input type="password" name="password_2" placeholder="Пароль ещё раз">
+            </p>
+            <p>
+                <input type="text" name="first_name" placeholder="Имя">
+            </p>
+            <p>
+                <input type="text" name="last_name" placeholder="Фамилия">
+            </p>
+            <p>
+                <input type="email" name="email" placeholder="Почта">
+            </p>
+            <button>Завершить</button>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+<form method="POST">
+    {% csrf_token %}
+    <p>
+        <input type="text" name="username" placeholder="Логин">
+    </p>
+    <p>
+        <input type="password" name="password" placeholder="Пароль">
+    </p>
+    <button>Войти</button>
+</form>
+
+
+
+from django.urls import path
+from .views import *
+
+
+urlpatterns = [
+    # /users/registration/
+    path('registration/', registration, name='registration'),
+
+    # /users/sign-in/
+    path('sign-in/', sign_in, name='sign-in'),
+    path('sign-out/', sign_out, name='sign-out'),
+
+]
