@@ -1,4 +1,7 @@
 https://github.com/Amankaium/socialnet
+
+https://github.com/arstanbek450/socialnet
+
 {% extends 'base.html' %}
 
 {% block content %}

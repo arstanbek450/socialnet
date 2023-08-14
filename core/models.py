@@ -105,7 +105,7 @@ class Short(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     video = models.FileField('Видео')
     created_at = models.DateTimeField(auto_now_add=True)
-    views_qty = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField(default=0)
 
 
 

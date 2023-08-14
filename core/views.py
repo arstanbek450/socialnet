@@ -12,7 +12,7 @@ def homepage(request):
     posts_list = Post.objects.all()  # SELECT * FROM Post;
     context["posts"] = posts_list
     shorts_list = Short.objects.all()
-    context['shorts'] = shorts_list
+    context["shorts"] = shorts_list
     return render(request, "home.html", context)
 
 
@@ -129,14 +129,19 @@ def search(request):
 
 def search_result(request):
     key_word = request.GET["key_word"]
-    posts = Post.objects.filter(name__icontains=key_word)
-    # posts = Post.objects.filter(
-    #     Q(name__icontains=key_word),
-    #     Q(description__icontains=key_word)
-    # )
+    # posts = Post.objects.filter(name__icontains=key_word)
+    posts = Post.objects.filter(
+        Q(name__icontains=key_word) |
+        Q(description__icontains=key_word)
+    )
     context = {"posts": posts}
-
     return render(request, 'home.html', context)
+
+
+
+
+
+
 
 
 
