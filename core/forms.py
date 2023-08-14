@@ -2,6 +2,10 @@ from django import forms
 from .models import Comment, Short
 from django.contrib.auth.models import User
 
+
+class SubscriptionForm(forms.Form):
+    subscribed_to = forms.ModelChoiceField(queryset=User.objects.all(), empty_label=None)
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

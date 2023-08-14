@@ -2,6 +2,12 @@ https://github.com/Amankaium/socialnet
 
 https://github.com/arstanbek450/socialnet
 
+.custom-circle {
+    border: 1px solid red;
+    border-radius: 50%;
+}
+
+
 {% extends 'base.html' %}
 
 {% block content %}

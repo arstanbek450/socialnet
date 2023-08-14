@@ -2,7 +2,22 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import *
-from .forms import CommentForm
+from .forms import CommentForm, SubscriptionForm
+
+
+
+@login_required
+def profile(request):
+    user = request.user
+    profile = user.profile
+
+    subscriptions = user.subscriptions.all()
+    subscribers = user.subscribers.all()
+
+    subscribed_to_users = [subscription.subscribed_to for subscription in subscriptions]
+
+    form = SubscriptionForm()
+    return render(request, 'profile_detail.html', {'profile': profile, 'subscribed_to_users': subscribed_to_users, 'subscribers': subscribers, 'form': form})
 
 
 # Create your views here.

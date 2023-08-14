@@ -21,7 +21,7 @@ urlpatterns = [
     path('search/', search, name='search'),
     path('search-result/', search_result, name='search-result'),
     path('users/', include('userapp.urls')),
-
+    path('profile_detail/', profile, name='profile'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

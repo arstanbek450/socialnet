@@ -4,6 +4,19 @@
     <h2>Профиль {{ profile.user.username }}</h2>
     <div>Ник: {{ profile.nickname }}</div>
     <div>{{ profile.description }}</div>
+
+  <h2>Subscriptions</h2>
+  <ul>
+    {% for subscription in subscriptions %}
+      <li>{{ subscription.subscribed_to.username }}</li>
+    {% endfor %}
+  </ul>
+  <h2>Subscribe</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Subscribe</button>
+  </form>
     </body>
 {% endblock %}
 

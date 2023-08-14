@@ -44,3 +44,6 @@ def sign_in(request):
 def sign_out(request):
     logout(request)
     return redirect('/')
+
+
+

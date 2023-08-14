@@ -1,6 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Добавьте другие поля вашего профиля
+
+class Subscription(models.Model):
+    subscriber = models.ForeignKey(User, related_name='subscriptions', on_delete=models.CASCADE)
+    subscribed_to = models.ForeignKey(User, related_name='subscribers', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
 # Create your models here.
 class Profile(models.Model):
@@ -103,9 +112,9 @@ class Short(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    video = models.FileField('Видео')
+    video = models.FileField('Видео', upload_to='video_post/')
     created_at = models.DateTimeField(auto_now_add=True)
-    views = models.PositiveIntegerField(default=0)
+    # views = models.PositiveIntegerField(default=0)
 
 
 
