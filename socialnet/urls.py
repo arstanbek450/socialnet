@@ -17,6 +17,9 @@ urlpatterns = [
     path('add-post/', create_post, name='add-post'),
     path('add-short/', add_short, name='add-short'),
     path('add-saved/', add_saved, name='add-saved'),
+    path('remove-saved/', remove_saved, name='remove-saved'),
+    path('search/',  search, name='search'),
+    path('search-result/',  search_result, name='search_result'),
     path('users/', include('userapp.urls')),
 
 ]

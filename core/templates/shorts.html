@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>Shorts</h2>
-    {% for short in shorts_list %}
+    {% for short in shorts %}
         <div>
             <hr>
             <a href="{% url 'shorts-info' short.id %}">

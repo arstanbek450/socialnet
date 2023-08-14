@@ -62,7 +62,7 @@ class Category(models.Model):
         (10, 10)
     )
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100, null=True, default='Default Category Name')
     rating = models.PositiveSmallIntegerField(
         choices=RATING_CHOICES,
         null=True,
@@ -99,20 +99,15 @@ class Comment(models.Model):
         verbose_name_plural = 'Комментарии'
         ordering = ['created_at']
 
-
 class Short(models.Model):
     title = models.CharField(max_length=100)
-    user = models.ForeignKey(
-        to=User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=False,
-        verbose_name='Автор',
-        related_name='short'
-    )
-    video = models.FileField('Видео', upload_to='video_post/')
+    description = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    video = models.FileField('Видео')
     created_at = models.DateTimeField(auto_now_add=True)
-    views_qty = models.PositiveIntegerField('Просмотры', default=0)
+    views_qty = models.PositiveIntegerField(default=0)
+
+
 
     class Meta:
         verbose_name = 'Видео'

@@ -72,9 +72,11 @@
               {% endif %}
             </div>
             <div class="my-focus">Главная</div>
-            <div class="my-focus">Поиск</div>
+            <div class="my-focus">Поискoвый запрос</div>
             <div class="my-focus">Интересное</div>
         </div>
+             <div class="my-focus">
+                 <a href="{% url 'search' %}">Поиск</a>
         <div class="col-9">
           {% if messages %}
             <ul class="messages">
